@@ -1,0 +1,8 @@
+version: "3.1"
+services:
+  builder:
+    build: .
+    container_name: dws_builder
+    volumes:
+      - ./dist:/build/dist
+    command: go build -o ./dist/dws ./src
