@@ -7,10 +7,13 @@ import (
 	"github.com/veocode/dws/src/contracts"
 )
 
+var defaultAction = actions.Version{}
+
 var actionMap map[string]reflect.Type = map[string]reflect.Type{
-	"":        reflect.TypeOf(actions.Version{}),
+	"":        reflect.TypeOf(defaultAction),
 	"test":    reflect.TypeOf(actions.Test{}),
 	"version": reflect.TypeOf(actions.Version{}),
+	"init":    reflect.TypeOf(actions.Init{}),
 }
 
 type ActionMapper struct {

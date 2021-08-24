@@ -1,4 +1,4 @@
-package services
+package repos
 
 type GithubRepo struct {
 }

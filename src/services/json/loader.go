@@ -1,4 +1,4 @@
-package services
+package json
 
 import (
 	"encoding/json"
@@ -7,19 +7,19 @@ import (
 	"os"
 )
 
-type JSONLoader struct {
+type Loader struct {
 	httpClient *http.Client
 	decoder    *json.Decoder
 	lastErr    error
 }
 
-func NewJSONLoader() *JSONLoader {
-	jsonLoader := new(JSONLoader)
+func NewLoader() *Loader {
+	jsonLoader := new(Loader)
 	jsonLoader.httpClient = &http.Client{}
 	return jsonLoader
 }
 
-func (j *JSONLoader) FromURL(url string) *JSONLoader {
+func (j *Loader) FromURL(url string) *Loader {
 	j.lastErr = nil
 	request, err := http.NewRequest(http.MethodGet, url, nil)
 	if err != nil {
@@ -49,7 +49,7 @@ func (j *JSONLoader) FromURL(url string) *JSONLoader {
 	return j
 }
 
-func (j *JSONLoader) FromFile(filePath string) *JSONLoader {
+func (j *Loader) FromFile(filePath string) *Loader {
 	j.lastErr = nil
 	jsonFile, err := os.Open(filePath)
 	if err != nil {
@@ -61,7 +61,7 @@ func (j *JSONLoader) FromFile(filePath string) *JSONLoader {
 	return j
 }
 
-func (j *JSONLoader) ToStruct(result interface{}) error {
+func (j *Loader) DecodeTo(result interface{}) error {
 	if j.lastErr != nil {
 		return j.lastErr
 	}
