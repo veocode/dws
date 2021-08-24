@@ -9,11 +9,11 @@ import (
 type Test struct {
 }
 
-func (action Test) Validate(args *repos.Arguments) error {
+func (action Test) Validate(args *repos.Arguments, data *repos.Dataset) error {
 	return nil
 }
 
-func (action Test) Execute(args *repos.Arguments) error {
+func (action Test) Execute(args *repos.Arguments, data *repos.Dataset) error {
 	fmt.Println("Test")
 	return nil
 }

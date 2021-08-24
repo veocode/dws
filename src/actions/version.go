@@ -9,11 +9,11 @@ import (
 type Version struct {
 }
 
-func (action Version) Validate(args *repos.Arguments) error {
+func (action Version) Validate(args *repos.Arguments, data *repos.Dataset) error {
 	return nil
 }
 
-func (action Version) Execute(args *repos.Arguments) error {
+func (action Version) Execute(args *repos.Arguments, data *repos.Dataset) error {
 	fmt.Println("Version: 0.0.1")
 	return nil
 }

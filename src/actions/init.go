@@ -2,7 +2,7 @@ package actions
 
 import (
 	"fmt"
-	"os"
+	"path/filepath"
 
 	"github.com/veocode/dws/src/repos"
 	"github.com/veocode/dws/src/services/shell"
@@ -17,19 +17,41 @@ var executableDeps = []string{
 type Init struct {
 }
 
-func (action Init) Validate(args *repos.Arguments) error {
-	return shell.CheckInstalledPrograms(executableDeps...)
-}
-
-func (action Init) Execute(args *repos.Arguments) error {
-
-	// folderPath = shell.CLIParser.Get
-
-	cwd, err := os.Getwd()
+func (action Init) Validate(args *repos.Arguments, data *repos.Dataset) error {
+	err := shell.CheckInstalledPrograms(executableDeps...)
 	if err != nil {
 		return err
 	}
-	fmt.Println("init in " + cwd)
+
+	targetDir, err := action.getTargetDir(args)
+	if err != nil {
+		return err
+	}
+
+	if !shell.IsPathExists(targetDir) {
+		return fmt.Errorf("directory %s doesn't exist", targetDir)
+	}
+
+	isEmpty, err := shell.IsDirEmpty(targetDir)
+	if err != nil {
+		return err
+	}
+	if !isEmpty {
+		return fmt.Errorf("directory %s is not empty", targetDir)
+	}
+
+	data.Set("targetDir", targetDir)
 
 	return nil
+}
+
+func (action Init) Execute(args *repos.Arguments, data *repos.Dataset) error {
+	targetDir := data.GetString("targetDir")
+
+	fmt.Printf("Initializing new workspace in %s\n ", targetDir)
+	return nil
+}
+
+func (action Init) getTargetDir(args *repos.Arguments) (string, error) {
+	return filepath.Abs(args.GetOrDefault(0, "."))
 }

@@ -21,7 +21,9 @@ func (cp *CLIParser) Parse(args []string) *CLIParser {
 		return cp
 	}
 	cp.Arguments.Action = args[1]
-	cp.Arguments.All = args[1:]
+	if len(args) > 2 {
+		cp.Arguments.All = args[2:]
+	}
 	return cp
 }
 
