@@ -5,6 +5,8 @@ import (
 	"io"
 	"os"
 	"os/exec"
+
+	"github.com/otiai10/copy"
 )
 
 func IsProgramInstalled(program string) bool {
@@ -41,4 +43,14 @@ func IsPathExists(path string) bool {
 		return false
 	}
 	return true
+}
+
+func Execute(appWithArgs ...string) error {
+	cmd := exec.Command(appWithArgs[0], appWithArgs[1:]...)
+	err := cmd.Run()
+	return err
+}
+
+func CopyDirectory(src, dst string) error {
+	return copy.Copy(src, dst)
 }

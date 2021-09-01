@@ -5,6 +5,7 @@ import (
 	"path/filepath"
 
 	"github.com/veocode/dws/src/repos"
+	"github.com/veocode/dws/src/services/hub"
 	"github.com/veocode/dws/src/services/shell"
 )
 
@@ -47,8 +48,18 @@ func (action Init) Validate(args *repos.Arguments, data *repos.Dataset) error {
 
 func (action Init) Execute(args *repos.Arguments, data *repos.Dataset) error {
 	targetDir := data.GetString("targetDir")
+	fmt.Printf("Initializing new workspace in %s...\n", targetDir)
 
-	fmt.Printf("Initializing new workspace in %s\n ", targetDir)
+	hub, err := hub.NewHub()
+	if err != nil {
+		return err
+	}
+
+	err = hub.ExtractPath("init/scratch", targetDir)
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 

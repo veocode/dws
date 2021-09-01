@@ -3,5 +3,5 @@ WORKDIR /build
 ENV CGO_ENABLED=0
 COPY go.mod .
 COPY go.sum .
-RUN go mod vendor
+RUN go mod download
 COPY src ./src

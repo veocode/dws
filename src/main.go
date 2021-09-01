@@ -11,33 +11,35 @@ import (
 
 const ExitCodeBadCommand = 65
 const ExitCodeError = 1
+const ExitCodeSuccess = 0
 
 func main() {
 	cli := shell.NewCLIParser().Parse(os.Args)
-	mapper := new(config.ActionMapper)
+	router := new(config.ActionRouter)
 
 	actionName := cli.GetActionName()
 	actionArgs := cli.GetActionArguments()
-	actionData := repos.NewDataset()
 
-	if !mapper.IsActionExists(actionName) {
-		fmt.Printf("Unknown action: %s\n", actionName)
-		os.Exit(1)
+	if !router.IsActionExists(actionName) {
+		fmt.Fprintf(os.Stderr, "Unknown action: %s\n", actionName)
+		os.Exit(ExitCodeError)
 	}
 
-	actionHandler := mapper.GetActionHandler(actionName)
+	actionData := repos.NewDataset()
+	actionHandler := router.GetActionHandler(actionName)
 
 	validateErr := actionHandler.Validate(actionArgs, actionData)
 	if validateErr != nil {
-		fmt.Printf("FAILED: %s\n", validateErr)
+		fmt.Fprintf(os.Stderr, "FAILED: %s\n", validateErr)
 		os.Exit(ExitCodeBadCommand)
 	}
 
 	executeErr := actionHandler.Execute(actionArgs, actionData)
 	if executeErr != nil {
-		fmt.Printf("FAILED: %s\n", executeErr)
+		fmt.Fprintf(os.Stderr, "FAILED: %s\n", executeErr)
 		os.Exit(ExitCodeError)
 	}
 
-	os.Exit(0)
+	fmt.Fprintf(os.Stdout, "SUCCESS: done\n")
+	os.Exit(ExitCodeSuccess)
 }

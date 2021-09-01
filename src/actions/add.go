@@ -10,7 +10,7 @@ type Add struct {
 }
 
 func (action Add) Validate(args *repos.Arguments, data *repos.Dataset) error {
-	currentDir
+	// currentDir
 
 	fmt.Printf("Current dir: ")
 	return nil
