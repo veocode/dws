@@ -3,6 +3,8 @@ package shell
 import (
 	"fmt"
 	"path/filepath"
+
+	"github.com/veocode/dws/src/config"
 )
 
 var ExecutableDeps = []string{
@@ -47,7 +49,7 @@ func (v *Validator) CheckDirForNewWorkspace() error {
 }
 
 func (v *Validator) CheckDirContainsWorkspace() error {
-	dwsFilePath := filepath.Join(v.targetDir, "dws.json")
+	dwsFilePath := filepath.Join(v.targetDir, config.FileMetaWorkspace)
 	if !IsPathExists(dwsFilePath) {
 		return fmt.Errorf("directory %s doesn't contain a dws workspace", v.targetDir)
 	}

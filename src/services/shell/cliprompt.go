@@ -27,7 +27,7 @@ func Ask(prompt string, defaultValue interface{}) (response string, err error) {
 func formatPrompt(prompt string, defaultValue interface{}) string {
 	pattern := ""
 	pattern += fmt.Sprint(ColorBlue)
-	pattern += "  >>"
+	pattern += " [?]"
 	pattern += fmt.Sprint(ColorGreen)
 	pattern += " %s"
 	pattern += fmt.Sprint(ColorReset)

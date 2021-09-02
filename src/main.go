@@ -29,13 +29,13 @@ func main() {
 
 	validateErr := actionHandler.Validate(actionArgs, actionData)
 	if validateErr != nil {
-		shell.PrintErr("FAILED: %s", validateErr)
+		shell.PrintErr("%s", validateErr)
 		os.Exit(ExitCodeBadCommand)
 	}
 
 	executeErr := actionHandler.Execute(actionArgs, actionData)
 	if executeErr != nil {
-		shell.PrintErr("FAILED: %s", executeErr)
+		shell.PrintErr("%s", executeErr)
 		os.Exit(ExitCodeError)
 	}
 

@@ -25,6 +25,7 @@ func PrintOut(pattern string, args ...interface{}) {
 }
 
 func PrintErr(pattern string, args ...interface{}) {
+	pattern = ColorRed + "FAILED: " + ColorReset + pattern
 	if len(args) > 0 {
 		fmt.Fprintf(os.Stderr, pattern+"\n", args...)
 	} else {
@@ -33,5 +34,6 @@ func PrintErr(pattern string, args ...interface{}) {
 }
 
 func PrintDone() {
-	PrintOut("SUCCESS: Done")
+	pattern := ColorGreen + "SUCCESS: " + ColorReset + "Done"
+	PrintOut(pattern)
 }

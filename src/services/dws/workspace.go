@@ -27,7 +27,7 @@ func (w *WorkspaceManager) CreateWorkspace(targetDir string) error {
 		return err
 	}
 
-	workspace := models.NewWorkspace()
+	workspace := models.NewWorkspace(targetDir)
 	workspace.Name = filepath.Base(targetDir)
 	workspace.Subnet, err = shell.Ask("Docker Subnet for this workspace", "192.171.0.0/16")
 	if err != nil {
@@ -39,5 +39,9 @@ func (w *WorkspaceManager) CreateWorkspace(targetDir string) error {
 		return err
 	}
 
+	return nil
+}
+
+func (w *WorkspaceManager) BuildComposeFiles(workspace *models.Workspace) error {
 	return nil
 }
