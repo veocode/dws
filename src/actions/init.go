@@ -1,7 +1,6 @@
 package actions
 
 import (
-	"fmt"
 	"path/filepath"
 
 	"github.com/veocode/dws/src/repos"
@@ -19,36 +18,23 @@ type Init struct {
 }
 
 func (action Init) Validate(args *repos.Arguments, data *repos.Dataset) error {
-	err := shell.CheckInstalledPrograms(executableDeps...)
-	if err != nil {
-		return err
-	}
-
 	targetDir, err := action.getTargetDir(args)
 	if err != nil {
 		return err
 	}
 
-	if !shell.IsPathExists(targetDir) {
-		return fmt.Errorf("directory %s doesn't exist", targetDir)
-	}
-
-	isEmpty, err := shell.IsDirEmpty(targetDir)
+	err = shell.NewValidator(targetDir).CheckDirForNewWorkspace()
 	if err != nil {
 		return err
 	}
-	if !isEmpty {
-		return fmt.Errorf("directory %s is not empty", targetDir)
-	}
 
 	data.Set("targetDir", targetDir)
-
 	return nil
 }
 
 func (action Init) Execute(args *repos.Arguments, data *repos.Dataset) error {
 	targetDir := data.GetString("targetDir")
-	fmt.Printf("Initializing new workspace in %s...\n", targetDir)
+	shell.PrintOut("Initializing new workspace in %s...", targetDir)
 
 	hub, err := hub.NewHub()
 	if err != nil {

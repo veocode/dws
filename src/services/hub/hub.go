@@ -1,7 +1,6 @@
 package hub
 
 import (
-	"fmt"
 	"os"
 	"path/filepath"
 
@@ -40,7 +39,7 @@ func (h *Hub) checkCache() error {
 
 func (h *Hub) downloadCache() error {
 	os.MkdirAll(h.cacheDir, os.ModePerm)
-	fmt.Printf("Downloading hub cache to %s...\n", h.cacheDir)
+	shell.PrintOut("Downloading hub cache to %s...", h.cacheDir)
 	err := shell.Execute("git", "clone", HubRepoURL, h.cacheDir)
 	return err
 }

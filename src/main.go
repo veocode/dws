@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"os"
 
 	"github.com/veocode/dws/src/config"
@@ -21,7 +20,7 @@ func main() {
 	actionArgs := cli.GetActionArguments()
 
 	if !router.IsActionExists(actionName) {
-		fmt.Fprintf(os.Stderr, "Unknown action: %s\n", actionName)
+		shell.PrintErr("Unknown action: %s", actionName)
 		os.Exit(ExitCodeError)
 	}
 
@@ -30,16 +29,16 @@ func main() {
 
 	validateErr := actionHandler.Validate(actionArgs, actionData)
 	if validateErr != nil {
-		fmt.Fprintf(os.Stderr, "FAILED: %s\n", validateErr)
+		shell.PrintErr("FAILED: %s", validateErr)
 		os.Exit(ExitCodeBadCommand)
 	}
 
 	executeErr := actionHandler.Execute(actionArgs, actionData)
 	if executeErr != nil {
-		fmt.Fprintf(os.Stderr, "FAILED: %s\n", executeErr)
+		shell.PrintErr("FAILED: %s", executeErr)
 		os.Exit(ExitCodeError)
 	}
 
-	fmt.Fprintf(os.Stdout, "SUCCESS: done\n")
+	shell.PrintDone()
 	os.Exit(ExitCodeSuccess)
 }

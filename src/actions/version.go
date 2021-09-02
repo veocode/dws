@@ -1,9 +1,8 @@
 package actions
 
 import (
-	"fmt"
-
 	"github.com/veocode/dws/src/repos"
+	"github.com/veocode/dws/src/services/shell"
 )
 
 type Version struct {
@@ -14,6 +13,6 @@ func (action Version) Validate(args *repos.Arguments, data *repos.Dataset) error
 }
 
 func (action Version) Execute(args *repos.Arguments, data *repos.Dataset) error {
-	fmt.Println("Version: 0.0.1")
+	shell.PrintOut("Version: 0.0.0")
 	return nil
 }

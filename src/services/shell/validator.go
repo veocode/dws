@@ -2,7 +2,7 @@ package shell
 
 import (
 	"fmt"
-	"os"
+	"path/filepath"
 )
 
 var ExecutableDeps = []string{
@@ -16,10 +16,6 @@ type Validator struct {
 }
 
 func NewValidator(dir string) *Validator {
-	if dir == "" {
-		dir, _ = os.Getwd()
-	}
-
 	validator := new(Validator)
 	validator.targetDir = dir
 	return validator
@@ -29,7 +25,12 @@ func (v *Validator) CheckDeps() error {
 	return CheckInstalledPrograms(ExecutableDeps...)
 }
 
-func (v *Validator) CheckDirForNewProject() error {
+func (v *Validator) CheckDirForNewWorkspace() error {
+	err := v.CheckDeps()
+	if err != nil {
+		return err
+	}
+
 	if !IsPathExists(v.targetDir) {
 		return fmt.Errorf("directory %s doesn't exist", v.targetDir)
 	}
@@ -42,5 +43,13 @@ func (v *Validator) CheckDirForNewProject() error {
 		return fmt.Errorf("directory %s is not empty", v.targetDir)
 	}
 
+	return nil
+}
+
+func (v *Validator) CheckDirContainsWorkspace() error {
+	dwsFilePath := filepath.Join(v.targetDir, "dws.json")
+	if !IsPathExists(dwsFilePath) {
+		return fmt.Errorf("directory %s doesn't contain a dws workspace", v.targetDir)
+	}
 	return nil
 }

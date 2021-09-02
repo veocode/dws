@@ -1,7 +1,6 @@
 package shell
 
 import (
-	"fmt"
 	"io"
 	"os"
 	"os/exec"
@@ -18,7 +17,7 @@ func IsProgramInstalled(program string) bool {
 func CheckInstalledPrograms(programs ...string) error {
 	for _, program := range programs {
 		if !IsProgramInstalled(program) {
-			return fmt.Errorf("%s not found, please install", program)
+			PrintErr("%s not found, please install", program)
 		}
 	}
 	return nil
