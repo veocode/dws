@@ -1,4 +1,4 @@
-package config
+package services
 
 import (
 	"reflect"
@@ -6,6 +6,13 @@ import (
 	"github.com/veocode/dws/src/actions"
 	"github.com/veocode/dws/src/contracts"
 )
+
+type Router struct {
+}
+
+func NewRouter() *Router {
+	return new(Router)
+}
 
 var defaultAction = actions.Version{}
 
@@ -15,16 +22,14 @@ var actionMap map[string]reflect.Type = map[string]reflect.Type{
 	"version": reflect.TypeOf(actions.Version{}),
 	"init":    reflect.TypeOf(actions.Init{}),
 	"add":     reflect.TypeOf(actions.Add{}),
+	"update":  reflect.TypeOf(actions.Update{}),
 }
 
-type ActionRouter struct {
-}
-
-func (am *ActionRouter) IsActionExists(actionName string) bool {
+func (r *Router) IsActionExists(actionName string) bool {
 	return actionMap[actionName] != nil
 }
 
-func (am *ActionRouter) GetActionHandler(actionName string) contracts.Action {
+func (r *Router) GetActionHandler(actionName string) contracts.Action {
 	actionHandler := reflect.New(actionMap[actionName]).Elem()
 	return actionHandler.Interface().(contracts.Action)
 }

@@ -5,12 +5,31 @@ import (
 	"os"
 )
 
+const (
+	ColorReset  = "\033[0m"
+	ColorRed    = "\033[31m"
+	ColorGreen  = "\033[32m"
+	ColorYellow = "\033[33m"
+	ColorBlue   = "\033[34m"
+	ColorPurple = "\033[35m"
+	ColorCyan   = "\033[36m"
+	ColorWhite  = "\033[37m"
+)
+
 func PrintOut(pattern string, args ...interface{}) {
-	fmt.Fprintf(os.Stdout, pattern+"\n", args)
+	if len(args) > 0 {
+		fmt.Fprintf(os.Stdout, pattern+"\n", args...)
+	} else {
+		fmt.Fprintln(os.Stdout, pattern)
+	}
 }
 
 func PrintErr(pattern string, args ...interface{}) {
-	fmt.Fprintf(os.Stderr, pattern+"\n", args)
+	if len(args) > 0 {
+		fmt.Fprintf(os.Stderr, pattern+"\n", args...)
+	} else {
+		fmt.Fprintln(os.Stderr, pattern)
+	}
 }
 
 func PrintDone() {

@@ -1,4 +1,4 @@
-package json
+package jsonio
 
 import (
 	"encoding/json"

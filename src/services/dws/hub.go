@@ -1,4 +1,4 @@
-package hub
+package dws
 
 import (
 	"os"
@@ -42,6 +42,15 @@ func (h *Hub) downloadCache() error {
 	shell.PrintOut("Downloading hub cache to %s...", h.cacheDir)
 	err := shell.Execute("git", "clone", HubRepoURL, h.cacheDir)
 	return err
+}
+
+func (h *Hub) UpdateCache() error {
+	err := shell.RemoveDirectory(h.cacheDir)
+	if err != nil {
+		return err
+	}
+
+	return h.checkCache()
 }
 
 func (h *Hub) IsSelectorExists(selector string) bool {

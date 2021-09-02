@@ -3,8 +3,8 @@ package main
 import (
 	"os"
 
-	"github.com/veocode/dws/src/config"
 	"github.com/veocode/dws/src/repos"
+	"github.com/veocode/dws/src/services"
 	"github.com/veocode/dws/src/services/shell"
 )
 
@@ -13,11 +13,11 @@ const ExitCodeError = 1
 const ExitCodeSuccess = 0
 
 func main() {
-	cli := shell.NewCLIParser().Parse(os.Args)
-	router := new(config.ActionRouter)
+	cliParser := shell.NewCLIParser().Parse(os.Args)
+	router := services.NewRouter()
 
-	actionName := cli.GetActionName()
-	actionArgs := cli.GetActionArguments()
+	actionName := cliParser.GetActionName()
+	actionArgs := cliParser.GetActionArguments()
 
 	if !router.IsActionExists(actionName) {
 		shell.PrintErr("Unknown action: %s", actionName)

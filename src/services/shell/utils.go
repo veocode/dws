@@ -53,3 +53,7 @@ func Execute(appWithArgs ...string) error {
 func CopyDirectory(src, dst string) error {
 	return copy.Copy(src, dst)
 }
+
+func RemoveDirectory(dir string) error {
+	return os.RemoveAll(dir)
+}
